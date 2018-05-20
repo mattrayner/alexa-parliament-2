@@ -1,0 +1,27 @@
+sudo: required
+
+language:
+  node:
+    - 6
+    - 7
+    - node
+
+matrix:
+  allow_failures:
+  - node: node
+
+services:
+  - docker
+
+before_install:
+  - pip install --user awscli # install aws cli w/o sudo
+  - export PATH=$PATH:$HOME/.local/bin # put aws in the path
+  - docker-compose -f docker-compose.test.yml build
+  - docker-compose -f docker-compose.test.yml up -d
+  - sleep 10
+  - docker ps -a
+  - AWS_REGION=eu-west-1 aws dynamodb create-table --table-name parliament --attribute-definitions AttributeName=id,AttributeType=S --key-schema AttributeName=id,KeyType=HASH --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5 --endpoint-url http://localhost:8000
+  - cd lambda & npm install
+
+script:
+  - npm test
