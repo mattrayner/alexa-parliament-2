@@ -1,21 +1,21 @@
 'use strict';
 
 import 'mocha';
-import { expect, should } from 'chai';
 
 import { RequestEnvelope, ResponseEnvelope } from 'ask-sdk-model';
 
 import { handler as skill } from '../src/index';
 
-import * as r from './fixtures/requests/launch_request.json'; // tslint:disable-line
-const request: RequestEnvelope = <RequestEnvelope>r;
-
 import { Assertion } from './utils/Assertion';
+
+import { ddb } from "./utils/DDBController";
+
+import { shared } from './utils/Shared'
+
+import * as r from './fixtures/requests/launch_request.json'; // tslint:disable-line
+
+const request:RequestEnvelope = <RequestEnvelope>r;
 const assert = new Assertion();
-
-import {ddb} from "./utils/DDBController";
-
-const USER_ID = "amzn1.ask.account.123";
 let skill_response:ResponseEnvelope;
 
 describe('Parliament : LaunchRequest', function () {
@@ -29,11 +29,9 @@ describe('Parliament : LaunchRequest', function () {
 
   context('as a first-time user', function () {
     beforeEach(() => {
-      this.timeout(5000);
-
       return new Promise((resolve, reject) => {
         // prepare the database
-        ddb.deleteFromDDB(USER_ID).then((data) => {
+        ddb.deleteFromDDB(shared.user_id()).then((data) => {
           skill(request, null, (error, responseEnvelope) => {
             skill_response = responseEnvelope;
             resolve();
@@ -71,7 +69,7 @@ describe('Parliament : LaunchRequest', function () {
     beforeEach(() => {
       return new Promise((resolve, reject) => {
         // prepare the database
-        ddb.initialiseDDB(USER_ID).then((data) => {
+        ddb.initialiseDDB(shared.user_id()).then((data) => {
           skill(request, null, (error:JSON, responseEnvelope:ResponseEnvelope) => {
             skill_response = responseEnvelope;
             resolve();

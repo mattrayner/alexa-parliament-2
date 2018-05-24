@@ -43,8 +43,43 @@ export async function handler(event: RequestEnvelope, context: any, callback: an
     }
   };
 
+  const HelpRequestHandler: RequestHandler = {
+    canHandle(handlerInput: HandlerInput) {
+      return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+        && handlerInput.requestEnvelope.request.intent.name === 'AMAZON.HelpIntent';
+    },
+    handle(handlerInput: HandlerInput) {
+      const request = handlerInput.requestEnvelope.request;
+
+      let response:Response = ResponseFactory.init()
+        .speak(i18n.S(request, '.help_intent.text'))
+        .reprompt(i18n.S(request, ".help_intent.reprompt"))
+        .getResponse();
+
+      return response;
+    }
+  };
+
+  const UnhandledIntent = {
+    canHandle() {
+      return true;
+    },
+    handle(handlerInput) {
+      const request = handlerInput.requestEnvelope.request;
+
+      return handlerInput.responseBuilder
+        .speak(i18n.S(request, '.unhandled_intent.text'))
+        .reprompt(i18n.S(request, '.unhandled_intent.reprompt'))
+        .getResponse();
+    },
+  };
+
   const factory = SkillBuilders.standard()
-    .addRequestHandlers(LaunchRequestHandler)
+    .addRequestHandlers(
+      LaunchRequestHandler,
+      HelpRequestHandler,
+      UnhandledIntent
+    )
     .withAutoCreateTable(true)
     .withTableName(Configuration.dbTableName);
 
