@@ -1,4 +1,7 @@
-db: db-start db-create
+db: db-build db-start db-create
+
+db-build:
+	docker-compose -f docker-compose.test.yml build
 
 db-start:
 	docker-compose -f docker-compose.test.yml up -d

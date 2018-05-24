@@ -28,16 +28,17 @@ export async function handler(event: RequestEnvelope, context: any, callback: an
 
           let lastPlayedEPOCH:number = attributes.lastPlayed;
 
-          let message_tag:string = "WELCOME_MSG";
+          let message_tag:string = ".launch_request.welcome";
 
           if(lastPlayedEPOCH > 0)
-            message_tag = "WELCOME_MSG_RETURN";
+            message_tag = ".launch_request.return";
 
-          return ResponseFactory.init()
-            .speak(i18n.S(request, message_tag, 'Parliament'))
-            .reprompt(i18n.S(request, "WELCOME_MSG_REPROMPT"))
-            .withShouldEndSession(true)
-            .getResponse();
+          let response:Response = ResponseFactory.init()
+              .speak(i18n.S(request, message_tag, 'Parliament'))
+              .reprompt(i18n.S(request, ".launch_request.reprompt"))
+              .getResponse();
+
+          return response;
         });
     }
   };

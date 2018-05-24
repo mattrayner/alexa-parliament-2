@@ -136,7 +136,13 @@ When using DynamoDB, you also must ensure your Lambda function [execution role](
 
 ### Local Tests
 
-This code uses [Mocha](https://mochajs.org/) and [Chai](http://chaijs.com/) to test the responses returned by your skill.  Be sure you have no test failures before deploying.
+This code uses [Mocha](https://mochajs.org/) and [Chai](http://chaijs.com/) to test the responses returned by your skill. It also relies on DynamoDB for testing.
+
+Included with this project is a Makefile that has all the commands needed to start a local version of DynamoDB within Docker. Ensure that docker is running and then execute:
+
+```bash
+make db
+```
 
 Execute your test by typing 
 
@@ -144,11 +150,9 @@ Execute your test by typing
 $ (cd lambda && npm test)
 ```
 
-```bash
-AWS_REGION=eu-west-1 aws dynamodb create-table --table-name parliament --attribute-definitions AttributeName=id,AttributeType=S --key-schema AttributeName=id,KeyType=HASH --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5 --endpoint-url http://localhost:8000
-```
+Be sure you have no test failures before deploying.
 
-Note : if you are deploying in another AWS region than us-east-1, be sure to have an environment variable defined :
+Note : if you are deploying in another AWS region than eu-west-1, be sure to have an environment variable defined :
 
 ```bash
 AWS_REGION=<your aws region>

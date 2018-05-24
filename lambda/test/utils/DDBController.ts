@@ -1,10 +1,11 @@
 'use strict';
 
 import * as AWS from 'aws-sdk';
-AWS.config.update({ region: 'eu-west-1' });
-
 import { Configuration } from '../../src/configuration';
 import { AWSError } from 'aws-sdk';
+
+// Configure AWS to use eu-west-1 region during testing
+AWS.config.update({ region: 'eu-west-1' });
 
 class DDBController {
 

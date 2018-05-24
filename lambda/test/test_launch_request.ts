@@ -23,8 +23,12 @@ describe('Parliament : LaunchRequest', function () {
     this.timeout(5000);
   });
 
+  afterEach(() => {
+    skill_response = null;
+  });
+
   context('as a first-time user', function () {
-    before(() => {
+    beforeEach(() => {
       this.timeout(5000);
 
       return new Promise((resolve, reject) => {
@@ -58,13 +62,13 @@ describe('Parliament : LaunchRequest', function () {
       assert.correctRepromptSpeechIncludesText(skill_response, 'Reprompt');
     });
 
-    it('it closes the session ', () => {
-      assert.correctSessionStatus(skill_response, true);
+    it('it does not close the session ', () => {
+      assert.correctSessionStatus(skill_response, false);
     });
   });
 
   context('as a return user', () => {
-    before(() => {
+    beforeEach(() => {
       return new Promise((resolve, reject) => {
         // prepare the database
         ddb.initialiseDDB(USER_ID).then((data) => {
