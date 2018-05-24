@@ -30,7 +30,6 @@ describe('Parliament : LaunchRequest', function () {
       return new Promise((resolve, reject) => {
         // prepare the database
         ddb.deleteFromDDB(USER_ID).then((data) => {
-          console.log("Finished preparing the database");
           skill(request, null, (error, responseEnvelope) => {
             skill_response = responseEnvelope;
             resolve();
@@ -69,7 +68,6 @@ describe('Parliament : LaunchRequest', function () {
       return new Promise((resolve, reject) => {
         // prepare the database
         ddb.initialiseDDB(USER_ID).then((data) => {
-          console.log("Finished preparing the database");
           skill(request, null, (error:JSON, responseEnvelope:ResponseEnvelope) => {
             skill_response = responseEnvelope;
             resolve();
