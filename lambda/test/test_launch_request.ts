@@ -35,7 +35,7 @@ describe('Parliament : LaunchRequest', function () {
           skill(request, null, (error, responseEnvelope) => {
             skill_response = responseEnvelope;
             resolve();
-          });
+          }, shared.test_configuration());
         });
       });
     });
@@ -57,7 +57,7 @@ describe('Parliament : LaunchRequest', function () {
     });
 
     it('it responds with the expected reprompt speech', () => {
-      assert.correctRepromptSpeechIncludesText(skill_response, 'Reprompt');
+      assert.correctRepromptSpeechIncludesText(skill_response, "Try saying, 'what's on', or, who's my MP.");
     });
 
     it('it does not close the session ', () => {
@@ -70,20 +70,20 @@ describe('Parliament : LaunchRequest', function () {
       return new Promise((resolve, reject) => {
         // prepare the database
         ddb.initialiseDDB(shared.user_id()).then((data) => {
-          skill(request, null, (error:JSON, responseEnvelope:ResponseEnvelope) => {
+          skill(request, null, (error, responseEnvelope) => {
             skill_response = responseEnvelope;
             resolve();
-          });
+          }, shared.test_configuration());
         });
       });
     });
 
     it('it responds with the expected output speech', () => {
-      assert.correctOutputSpeechIncludesText(skill_response, 'Welcome back to Parliament');
+      assert.correctOutputSpeechIncludesText(skill_response, "Welcome back to Parliament. Try saying what's on, who's my MP, or help.");
     });
 
     it('it responds with the expected reprompt speech', () => {
-      assert.correctRepromptSpeechIncludesText(skill_response, 'Reprompt');
+      assert.correctRepromptSpeechIncludesText(skill_response, "Try saying, 'what's on', or, who's my MP.");
     });
   })
 });

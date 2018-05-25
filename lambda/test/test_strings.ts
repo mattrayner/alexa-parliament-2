@@ -22,10 +22,6 @@ describe('Strings', () => {
         .withTimestamp('2017-03-04T19:02:37Z')
         .build();
 
-    // before( () => {
-
-    // });
-
     it('gives an english string back', () => {
         const s = i18n.S(request_en_GB, "TEST");
         expect(s).to.equal("test english");

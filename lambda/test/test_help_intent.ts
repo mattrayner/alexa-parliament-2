@@ -8,9 +8,13 @@ import { handler as skill } from '../src/index';
 
 import { Assertion } from './utils/Assertion';
 
-import { ddb } from "./utils/DDBController";
-
 import { shared } from './utils/Shared'
+
+import * as sinon from 'sinon';
+
+import { Configuration } from '../src/configuration';
+
+import { ddb } from "./utils/DDBController";
 
 import * as r from './fixtures/requests/help_intent.json'; // tslint:disable-line
 
@@ -28,7 +32,7 @@ describe('Parliament : HelpIntent', function () {
         skill(request, null, (error, responseEnvelope) => {
           skill_response = responseEnvelope;
           resolve();
-        });
+        }, shared.test_configuration());
       });
     });
   });
@@ -46,7 +50,7 @@ describe('Parliament : HelpIntent', function () {
   });
 
   it('it responds with the expected output speech', () => {
-    assert.correctOutputSpeechIncludesText(skill_response, 'Help text');
+    assert.correctOutputSpeechIncludesText(skill_response, "Parliament for Alexa, can tell you what\'s on today at the Houses of Parliament, or tell you who your MP is. Try saying, \'what\'s on\', to hear about the events at both houses. Alternatively, say, \'whats on at the commons\', or, \'whats on in the lords\', to hear about the events at a specific house. To find out who your MP is, try saying, who\'s my MP.");
   });
 
   it('it responds with reprompt speech', () => {
@@ -54,7 +58,7 @@ describe('Parliament : HelpIntent', function () {
   });
 
   it('it responds with the expected reprompt speech', () => {
-    assert.correctRepromptSpeechIncludesText(skill_response, 'Help reprompt');
+    assert.correctRepromptSpeechIncludesText(skill_response, "Try saying, 'what's on', or, who's my MP.");
   });
 
   it('it does not close the session ', () => {

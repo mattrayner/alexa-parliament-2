@@ -12,13 +12,13 @@ import { ddb } from "./utils/DDBController";
 
 import { shared } from './utils/Shared'
 
-import * as r from './fixtures/requests/unhandled_intent.json'; // tslint:disable-line
+import * as r from './fixtures/requests/session_ended_intent.json'; // tslint:disable-line
 
 const request:RequestEnvelope = <RequestEnvelope>r;
 const assert = new Assertion();
 let skill_response:ResponseEnvelope;
 
-describe('Parliament : UnhandledIntent', function () {
+describe('Parliament : SessionEndedIntent', function () {
   beforeEach(() => {
     this.timeout(5000);
 
@@ -39,25 +39,5 @@ describe('Parliament : UnhandledIntent', function () {
 
   it('it responds with valid response structure ', () => {
     assert.correctResponseStructure(skill_response);
-  });
-
-  it('it responses with output speech ', () => {
-    assert.correctOutputSpeechStructure(skill_response);
-  });
-
-  it('it responds with the expected output speech', () => {
-    assert.correctOutputSpeechIncludesText(skill_response, 'Unhandled stuff');
-  });
-
-  it('it responds with reprompt speech', () => {
-    assert.correctRepromptSpeechStructure(skill_response);
-  });
-
-  it('it responds with the expected reprompt speech', () => {
-    assert.correctRepromptSpeechIncludesText(skill_response, 'Unhandled reprompt');
-  });
-
-  it('it does not close the session ', () => {
-    assert.correctSessionStatus(skill_response, false);
   });
 });

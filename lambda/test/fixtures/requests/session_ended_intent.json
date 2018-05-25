@@ -1,0 +1,39 @@
+{
+  "version": "1.0",
+  "session": {
+    "new": true,
+    "sessionId": "amzn1.echo-api.session.123",
+    "application": {
+      "applicationId": "amzn1.ask.skill.123"
+    },
+    "user": {
+      "userId": "amzn1.ask.account.123"
+    }
+  },
+  "context": {
+    "System": {
+      "application": {
+        "applicationId": "amzn1.ask.skill.123"
+      },
+      "user": {
+        "userId": "amzn1.ask.account.123"
+      },
+      "device": {
+        "supportedInterfaces": {
+          "AudioPlayer": {}
+        }
+      }
+    }
+  },
+  "request": {
+    "type": "SessionEndedRequest",
+    "requestId": "amzn1.echo-api.request.123",
+    "timestamp": "2017-03-13T22:39:07Z",
+    "reason": "ERROR",
+    "locale": "en-GB",
+    "error": {
+      "type": "DEVICE_COMMUNICATION_ERROR",
+      "message": "Some error message"
+    }
+  }
+}

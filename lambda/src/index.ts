@@ -6,8 +6,7 @@ import { RequestEnvelope, ResponseEnvelope, Response } from 'ask-sdk-model';
 import { Configuration } from "./configuration";
 import { i18n } from "./utils/I18N";
 
-export async function handler(event: RequestEnvelope, context: any, callback: any): Promise<ResponseEnvelope> {
-
+export async function handler(event: RequestEnvelope, context: any, callback: any, configuration:Configuration=Configuration): Promise<ResponseEnvelope> {
   const LaunchRequestHandler: RequestHandler = {
     canHandle(handlerInput: HandlerInput) {
       return handlerInput.requestEnvelope.request.type === 'LaunchRequest';
@@ -20,17 +19,17 @@ export async function handler(event: RequestEnvelope, context: any, callback: an
           // Check if user is invoking the skill the first time and initialize preset values
           if (attributes === undefined || Object.keys(attributes).length === 0) {
             attributes = {
-              lastPlayed: 0,
+              lastLaunched: 0,
               playedCount: 0
             };
             handlerInput.attributesManager.setPersistentAttributes(attributes);
           }
 
-          let lastPlayedEPOCH:number = attributes.lastPlayed;
+          let lastLaunchedEPOCH:number = attributes.lastLaunched;
 
           let message_tag:string = ".launch_request.welcome";
 
-          if(lastPlayedEPOCH > 0)
+          if(lastLaunchedEPOCH > 0)
             message_tag = ".launch_request.return";
 
           let response:Response = ResponseFactory.init()
@@ -60,6 +59,15 @@ export async function handler(event: RequestEnvelope, context: any, callback: an
     }
   };
 
+  const SessionEndedRequestHandler = {
+    canHandle(handlerInput) {
+      return handlerInput.requestEnvelope.request.type === 'SessionEndedRequest';
+    },
+    handle(handlerInput) {
+      return handlerInput.responseBuilder.getResponse();
+    },
+  };
+
   const UnhandledIntent = {
     canHandle() {
       return true;
@@ -78,12 +86,13 @@ export async function handler(event: RequestEnvelope, context: any, callback: an
     .addRequestHandlers(
       LaunchRequestHandler,
       HelpRequestHandler,
+      SessionEndedRequestHandler,
       UnhandledIntent
     )
     .withAutoCreateTable(true)
-    .withTableName(Configuration.dbTableName);
+    .withTableName(configuration.dbTableName);
 
-  if (Configuration.useLocalDB) {
+  if (configuration.useLocalDB) {
     const ddbClient = new AWS.DynamoDB({
       endpoint: 'http://localhost:8000'
     });
@@ -95,14 +104,14 @@ export async function handler(event: RequestEnvelope, context: any, callback: an
 
   try {
 
-    if (Configuration.debug) {
+    if (configuration.debug) {
       console.log("\n" + "******************* REQUEST  **********************");
       console.log(JSON.stringify(event, null, 2));
     }
 
     const responseEnvelope: ResponseEnvelope = await skill.invoke(event, context);
 
-    if (Configuration.debug) {
+    if (configuration.debug) {
       console.log("\n" + "******************* RESPONSE  **********************");
       console.log(JSON.stringify(responseEnvelope, null, 2));
     }
@@ -110,7 +119,7 @@ export async function handler(event: RequestEnvelope, context: any, callback: an
     return callback(null, responseEnvelope);
 
   } catch (error) {
-    if (Configuration.debug) {
+    if (configuration.debug) {
       console.log(JSON.stringify(error, null, 2));
     }
     return callback(error);
