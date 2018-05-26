@@ -6,5 +6,7 @@ export const Configuration = {
 
   useLocalDB: true,
 
-  dbTableName: 'parliament'
+  dbTableName: 'parliament',
+
+  longformLaunchThreshold : 1000 /*ms*/ * 60 * 60 * 48 // 48 hours
 };

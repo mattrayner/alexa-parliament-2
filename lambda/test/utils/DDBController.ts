@@ -50,7 +50,7 @@ class DDBController {
         Item: {
           id: userId,
           attributes: {
-            lastLaunched: Math.round(new Date().getTime()),
+            lastLaunched: (new Date().getTime()) - (Configuration.longformLaunchThreshold + 100), // Initialise a user so that the 'short' launch message will be played.
             playedCount: 0
           }
         }

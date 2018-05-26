@@ -19,7 +19,7 @@ export async function handler(event: RequestEnvelope, context: any, callback: an
           // Check if user is invoking the skill the first time and initialize preset values
           if (attributes === undefined || Object.keys(attributes).length === 0) {
             attributes = {
-              lastLaunched: 0,
+              lastLaunched: new Date().getTime(),
               playedCount: 0
             };
             handlerInput.attributesManager.setPersistentAttributes(attributes);
@@ -29,7 +29,9 @@ export async function handler(event: RequestEnvelope, context: any, callback: an
 
           let message_tag:string = ".launch_request.welcome";
 
-          if(lastLaunchedEPOCH > 0)
+          let long_form_launch_threshold = (new Date().getTime()) - configuration.longformLaunchThreshold;
+
+          if(lastLaunchedEPOCH < long_form_launch_threshold)
             message_tag = ".launch_request.return";
 
           let response:Response = ResponseFactory.init()

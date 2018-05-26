@@ -17,7 +17,6 @@ before_install:
   - pip install --user awscli # install aws cli w/o sudo
   - export PATH=$PATH:$HOME/.local/bin # put aws in the path
   - bash lambda/test/scripts/aws_credentials.sh
-  - docker-compose -f docker-compose.test.yml build
   - make db
   - cd lambda
 
