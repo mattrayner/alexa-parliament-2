@@ -28,6 +28,7 @@ jobs:
     - stage: deploy
       if: branch = master
       node_js: 7
+      before_install: skip
       script: skip     # usually you do not want to rerun any test
       deploy:
         provider: lambda
