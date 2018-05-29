@@ -29,7 +29,7 @@ $ pip install aws-cli
 $ aws configure // https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html
 ```
 
-2. You need to install and to initialize [ASK CLI](https://developer.amazon.com/docs/smapi/quick-start-alexa-skills-kit-command-line-interface.html) with 
+2. You need to install and to initialize [ASK CLI](w) with 
 
 ```bash
 $ ask init

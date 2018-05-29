@@ -3,24 +3,22 @@
     "publishingInformation": {
       "locales": {
         "en-GB": {
-          "summary": "Listen to My Radio, less bla bla bla, more la la la.",
+          "summary": "Find out what's going on today at the Houses of Parliament.",
           "examplePhrases": [
-            "Alexa, open My Radio",
-            "Alexa, play My Radio",
-            "Alexa, ask My Radio to play"
+            "Alexa, ask Parliament what's on.",
+            "Alexa, ask Parliament whats on at the House of Commons.",
+            "Alexa, ask Parliament who's my MP."
           ],
           "keywords": [
-            "music",
-            "streaming",
-            "radio"
+            "parliament", "commons", "lords", "uk", "government", "calendar", "mp", "big ben"
           ],
           "name": "Parliament",
-          "description": "Listen to My Radio, with less bla bla bla, and more la la la.\n\nMy Radio provides a high quality sound 24/7 with the best music.\n\nTo start, just say \"Alexa, launch My Radio\" or \"Alexa, play my radio\" to start the radio\".\n\nAt anytime, you can stop the radio by saying \"Alexa, stop\"",
-          "smallIconUri": "https://alexademo.ninja/skills/logo-108.png",
-          "largeIconUri": "https://alexademo.ninja/skills/logo-512.png"
+          "description": "Find out what's on at the Houses of Parliament today. From an overview of events, through to the full calendar.\n\nFor an overview of both houses say:\n• Alexa, ask Parliament what's on?\n\nFor commons or lords, try:\n• Alexa, ask Parliament what's on at the House of Commons?\n• Alexa, ask Parliament what's on at the House of Lords?\n\nIf you'd like a full breakdown of the schedule, simply respond 'yes' when asked if you'd like to hear more.",
+          "smallIconUri": "https://raw.githubusercontent.com/mattrayner/alexa-parliament/master/img/logo_108.png",
+          "largeIconUri": "https://raw.githubusercontent.com/mattrayner/alexa-parliament/master/img/logo_512.png"
         }
       },
-      "isAvailableWorldwide": true,
+      "isAvailableWorldwide": false,
       "testingInstructions": "Include your testing instruction (if any) here",
       "category": "STREAMING_SERVICE",
       "distributionCountries": []
