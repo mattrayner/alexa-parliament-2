@@ -8,7 +8,19 @@ let EnglishStrings = {
   ".help_intent.text"     : "Parliament for Alexa, can tell you what's on today at the Houses of Parliament, or tell you who your MP is. Try saying, 'what's on', to hear about the events at both houses. Alternatively, say, 'whats on at the commons', or, 'whats on in the lords', to hear about the events at a specific house. To find out who your MP is, try saying, who's my MP.",
   ".help_intent.reprompt" : "Try saying, 'what's on', or, who's my MP.",
 
-  ".unhandled_intent.text": "Unhandled stuff",
+  ".find_my_mp_intent.request_permission"                   : "Please enable Location permissions in the Amazon Alexa app.",
+  ".find_my_mp_intent.location_failure"                     : "There was a problem getting your postcode from Amazon. Please try again later.",
+  ".find_my_mp_intent.no_address"                           : "I was unable to get the address for this device. Check that you've set and address for this device within your Alexa app.",
+  ".find_my_mp_intent.parliament_error"                     : "I was unable to reach Parliament. Please try again later.",
+  ".find_my_mp_intent.mp_error"                             : "Hmm, there was a problem. Please try again later.",
+  ".find_my_mp_intent.no_information"                       : "I was unable to find any information for {0}.",
+  ".find_my_mp_intent.no_mp_for_location"                   : "I couldn't find an MP for {0}.",
+  ".find_my_mp_intent.mp_for_location"                      : "The MP for {0}, is {1}.",
+  ".find_my_mp_intent.mp_for_location_and_incumbency"       : "The MP for {0}, is {1}. Your MP was elected on <say-as interpret-as=\"date\" format=\"dmy\">{2}</say-as>.",
+  ".find_my_mp_intent.mp_for_location_and_party"            : "The MP for {0}, is {1}. Your MP is a member of the {3} party.",
+  ".find_my_mp_intent.mp_for_location_party_and_incumbency" : "The MP for {0}, is {1}. Your MP is a member of the {3} party, and was elected on <say-as interpret-as=\"date\" format=\"dmy\">{2}</say-as>.",
+
+  ".unhandled_intent.text"    : "Unhandled stuff",
   ".unhandled_intent.reprompt": "Unhandled reprompt",
 
   "TEST"        : "test english",

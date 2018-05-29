@@ -1,0 +1,43 @@
+{
+  "version": "1.0",
+  "session": {
+    "new": true,
+    "sessionId": "amzn1.echo-api.session.123",
+    "application": {
+      "applicationId": "amzn1.ask.skill.123"
+    },
+    "user": {
+      "userId": "amzn1.ask.account.123"
+    }
+  },
+  "context": {
+    "System": {
+      "application": {
+        "applicationId": "amzn1.ask.skill.123"
+      },
+      "user": {
+        "userId": "amzn1.ask.account.123",
+        "permissions": {
+          "consentToken": "1234"
+        }
+      },
+      "apiAccessToken": "AxThk...",
+      "apiEndpoint": "https://api.amazonalexa.com",
+      "device": {
+        "deviceId": "string-identifying-the-device",
+        "supportedInterfaces": {
+          "AudioPlayer": {}
+        }
+      }
+    }
+  },
+  "request": {
+    "type": "IntentRequest",
+    "requestId": "amzn1.echo-api.request.123",
+    "timestamp": "2017-03-13T22:39:07Z",
+    "locale": "en-GB",
+    "intent": {
+      "name": "FindMyMPIntent"
+    }
+  }
+}

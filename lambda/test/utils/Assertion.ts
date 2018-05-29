@@ -20,32 +20,43 @@ export class Assertion {
     expect(r.outputSpeech).to.have.property("ssml");
 
     let os = <ui.SsmlOutputSpeech>r.outputSpeech;
-    expect(os.ssml).to.match(/^<speak>/); // startWith('<speak>');
-    expect(os.ssml).to.match(/<\/speak>$/); //.endWith('</speak>');
+    expect(os.ssml).to.match(/^<speak>/, 'Message begins with speak tag'); // startWith('<speak>');
+    expect(os.ssml).to.match(/<\/speak>$/, 'Message ends with speak tag'); //.endWith('</speak>');
   }
 
   correctOutputSpeechIncludesText(response: ResponseEnvelope, text: string): void {
     let os = <ui.SsmlOutputSpeech>response.response.outputSpeech;
-    expect(os.ssml).to.contains(text);
+    expect(os.ssml).to.contains(text, 'SSML contains text');
   }
 
   correctOutputSpeechDoesNotIncludeText(response: ResponseEnvelope, text: string): void {
     let os = <ui.SsmlOutputSpeech>response.response.outputSpeech;
-    expect(os.ssml).to.not.contains(text);
+    expect(os.ssml).to.not.contain(text, 'SSML does not contain text');
   }
 
   correctSessionStatus(response: ResponseEnvelope, shouldEndSession: boolean): void {
     let r: Response = <Response>response.response;
-    expect(r).to.have.property("shouldEndSession");
-    expect(r.shouldEndSession).to.equal(shouldEndSession);
+    expect(r).to.have.property('shouldEndSession');
+    expect(r.shouldEndSession).to.equal(shouldEndSession, `shouldEndSession = ${shouldEndSession}`);
   }
 
   includesStandardCard(response: ResponseEnvelope): void {
     let r: Response = <Response>response.response;
-    expect(r).to.have.property("card");
+    expect(r).to.have.property('card');
     expect(r.card.type).to.equal('Standard');
     expect((<ui.StandardCard>r.card).text).to.not.be.equal('');
     expect((<ui.StandardCard>r.card).title).to.not.be.equal('');
+  }
+
+  includesAddressPermissionCard(response: ResponseEnvelope): void {
+    let r: Response = <Response>response.response;
+    expect(r).to.have.property('card');
+    expect(r.card.type).to.equal('AskForPermissionsConsent', 'Has a permission card');
+    expect((<ui.AskForPermissionsConsentCard>r.card).permissions.length).to.equal(1, 'Has exactly one permission');
+    expect((<ui.AskForPermissionsConsentCard>r.card).permissions[0]).to.equal(
+      'read::alexa:device:all:address:country_and_postal_code',
+      'Has the expected card permission'
+    );
   }
 
   correctRepromptSpeechStructure(response: ResponseEnvelope): void {
@@ -60,6 +71,13 @@ export class Assertion {
     let os = <ui.SsmlOutputSpeech>r.reprompt.outputSpeech;
     expect(os.ssml).to.match(/^<speak>/); // startWith('<speak>');
     expect(os.ssml).to.match(/<\/speak>$/); //.endWith('</speak>');
+  }
+
+  withoutRepromptSpeechStructure(response: ResponseEnvelope): void {
+    expect(response).to.have.property("response");
+    let r: Response = <Response>response.response;
+
+    expect(r).not.to.have.property("reprompt");
   }
 
   correctRepromptSpeechIncludesText(response: ResponseEnvelope, text: string): void {

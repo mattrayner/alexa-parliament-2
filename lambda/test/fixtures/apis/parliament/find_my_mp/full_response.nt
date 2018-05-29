@@ -1,0 +1,22 @@
+<https://id.parliament.uk/ew2nBXJ7> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://id.parliament.uk/schema/ConstituencyGroup> .
+<https://id.parliament.uk/ew2nBXJ7> <https://id.parliament.uk/schema/constituencyGroupName> "Cities of London and Westminster" .
+<https://id.parliament.uk/ew2nBXJ7> <https://id.parliament.uk/schema/constituencyGroupHasHouseSeat> <https://id.parliament.uk/Qt0BigGT> .
+<https://id.parliament.uk/Qt0BigGT> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://id.parliament.uk/schema/HouseSeat> .
+<https://id.parliament.uk/Qt0BigGT> <https://id.parliament.uk/schema/houseSeatHasConstituencyGroup> <https://id.parliament.uk/ew2nBXJ7> .
+<https://id.parliament.uk/Qt0BigGT> <https://id.parliament.uk/schema/houseSeatHasHouse> <https://id.parliament.uk/1AFu55Hs> .
+<https://id.parliament.uk/1AFu55Hs> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://id.parliament.uk/schema/House> .
+<https://id.parliament.uk/1AFu55Hs> <https://id.parliament.uk/schema/houseName> "House of Commons" .
+<https://id.parliament.uk/8FsuRjTr> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://id.parliament.uk/schema/SeatIncumbency> .
+<https://id.parliament.uk/8FsuRjTr> <https://id.parliament.uk/schema/parliamentaryIncumbencyStartDate> "2017-06-08+00:00"^^<http://www.w3.org/2001/XMLSchema#date> .
+<https://id.parliament.uk/8FsuRjTr> <https://id.parliament.uk/schema/seatIncumbencyHasHouseSeat> <https://id.parliament.uk/Qt0BigGT> .
+<https://id.parliament.uk/rk95p4uH> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://id.parliament.uk/schema/Person> .
+<https://id.parliament.uk/rk95p4uH> <https://id.parliament.uk/schema/personGivenName> "Mark" .
+<https://id.parliament.uk/rk95p4uH> <https://id.parliament.uk/schema/personFamilyName> "Field" .
+<https://id.parliament.uk/rk95p4uH> <http://example.com/F31CBD81AD8343898B49DC65743F0BDF> "Mark Field" .
+<https://id.parliament.uk/rk95p4uH> <https://id.parliament.uk/schema/memberHasParliamentaryIncumbency> <https://id.parliament.uk/8FsuRjTr> .
+<https://id.parliament.uk/rk95p4uH> <https://id.parliament.uk/schema/partyMemberHasPartyMembership> <https://id.parliament.uk/kGfh5eyr> .
+<https://id.parliament.uk/kGfh5eyr> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://id.parliament.uk/schema/PartyMembership> .
+<https://id.parliament.uk/kGfh5eyr> <https://id.parliament.uk/schema/partyMembershipHasParty> <https://id.parliament.uk/DIifZMjq> .
+<https://id.parliament.uk/kGfh5eyr> <https://id.parliament.uk/schema/partyMembershipStartDate> "2017-06-08+00:00"^^<http://www.w3.org/2001/XMLSchema#date> .
+<https://id.parliament.uk/DIifZMjq> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://id.parliament.uk/schema/Party> .
+<https://id.parliament.uk/DIifZMjq> <https://id.parliament.uk/schema/partyName> "Conservative" .

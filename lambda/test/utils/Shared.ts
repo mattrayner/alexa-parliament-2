@@ -8,12 +8,9 @@ class Shared {
     }
 
     test_configuration():Configuration {
-        let test_config:Configuration = {
-          debug: false,
-          useLocalDB: true,
-          dbTableName: Configuration.dbTableName,
-          longformLaunchThreshold: Configuration.longformLaunchThreshold
-        };
+        let test_config:Configuration = new Configuration();
+        test_config.debug = false;
+        test_config.useLocalDB = true;
 
         return test_config;
     }

@@ -9,7 +9,6 @@ AWS.config.update({region: 'eu-west-1'});
 
 class DDBController {
 
-
   private ddbService = new AWS.DynamoDB({
     endpoint: 'http://localhost:8000'
   });
@@ -21,7 +20,7 @@ class DDBController {
 
     return new Promise<AWS.DynamoDB.Types.DocumentClient.GetItemOutput>((resolve, reject) => {
       var params: AWS.DynamoDB.Types.DocumentClient.GetItemInput = {
-        TableName: Configuration.dbTableName,
+        TableName: new Configuration().dbTableName,
         Key: {
           id: userId
         }
@@ -46,11 +45,11 @@ class DDBController {
     return new Promise<AWS.DynamoDB.Types.DocumentClient.UpdateItemOutput>((resolve, reject) => {
 
       var params: AWS.DynamoDB.Types.DocumentClient.PutItemInput = {
-        TableName: Configuration.dbTableName,
+        TableName: new Configuration().dbTableName,
         Item: {
           id: userId,
           attributes: {
-            lastLaunched: (new Date().getTime()) - (Configuration.longformLaunchThreshold + 100), // Initialise a user so that the 'short' launch message will be played.
+            lastLaunched: (new Date().getTime()) - (new Configuration().longformLaunchThreshold + 100), // Initialise a user so that the 'short' launch message will be played.
             playedCount: 0
           }
         }
@@ -78,7 +77,7 @@ class DDBController {
     return new Promise<AWS.DynamoDB.Types.DocumentClient.DeleteItemOutput>((resolve, reject) => {
 
       var params: AWS.DynamoDB.Types.DocumentClient.DeleteItemInput = {
-        TableName: Configuration.dbTableName,
+        TableName: new Configuration().dbTableName,
         Key: {
           id: userId
         }

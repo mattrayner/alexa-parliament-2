@@ -2,6 +2,7 @@
 
 import { Request } from 'ask-sdk-model';
 import { strings } from './strings';
+import { winston } from './logger';
 
 interface localeStrings {
     [key: string] : string
@@ -18,24 +19,25 @@ class I18N {
     }
 
     public S(request: Request, key: string, ...args: any[]): string {
-        var result: string;
+        let result: string;
 
         try {
             result = this.strings[request.locale][key];
+
             if (result === undefined) {
                 result = `No string defined for key : ${key}`
             }
+
             // search for {x} and replaces with values
             const regex = /({\d*})/g;
+
             result = result.replace(regex, (match: string, p1: string, offset: number, string: string): string => {
                 const index = parseInt((match.substring(1,match.length)).substring(0,match.length-2));
                 return args[index];
             });
-
-
         } catch (e) {
-            console.log(e);
-            console.log(`Can not find strings for locale ${request.locale} and key ${key}`);
+          winston.error(e);
+          winston.error(`Can not find strings for locale ${request.locale} and key ${key}`);
         }
         return result
     }
