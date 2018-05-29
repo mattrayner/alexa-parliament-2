@@ -35,8 +35,11 @@ jobs:
         function_name: parliament
         region: eu-west-1
         role: arn:aws:iam::665717792942:role/service-role/parliament
-        runtime: nodejs7.10
+        runtime: nodejs
         handler_name: handler
         access_key_id: AKIAINPNNSVAFWAW5KUQ
+        environment_variables:
+          - NODE_ENV=production
+        publish: true
         timeout: 60
         zip: lambda
