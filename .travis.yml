@@ -29,7 +29,8 @@ jobs:
       if: branch = master
       node_js: 8
       before_install: (cd lambda && npm install)
-      script: skip     # usually you do not want to rerun any test
+      script: make compile
+      before_deploy: make copy
       deploy:
         provider: lambda
         function_name: parliament
@@ -42,4 +43,4 @@ jobs:
           - NODE_ENV=production
         publish: true
         timeout: 60
-        zip: lambda
+        zip: lambda/dist

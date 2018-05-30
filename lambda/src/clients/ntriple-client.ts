@@ -59,7 +59,7 @@ export class NtripleClient {
    */
   __handleNtripleAPIRequest(requestOptions:RequestOptions, fulfill:(responseObject:ResponseObject) => any, reject:() => any) {
     winston.debug('getting:');
-    winston.debug(requestOptions);
+    winston.debug(`hostname: ${requestOptions.hostname}, path: ${requestOptions.path}`);
 
     https.get(requestOptions, (response) => {
       let data:string = '';
