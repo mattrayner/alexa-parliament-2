@@ -8,6 +8,7 @@ import { i18n } from './utils/I18N';
 import { winston } from './utils/logger';
 import * as N3 from 'n3';
 import { NtripleClient } from './clients/ntriple-client';
+import { Airbrake } from './utils/airbrake';
 import * as moment from "moment";
 
 const PERMISSIONS:string[] = ['read::alexa:device:all:address:country_and_postal_code'];
@@ -194,6 +195,14 @@ export async function handler(event: RequestEnvelope, context: any, callback: an
                 .getResponse();
           }
         } catch(error) {
+          Airbrake.notify({
+            error: error,
+            context: { component: 'NtripleClient' },
+            environment: { nodeEnv: process.env.NODE_ENV },
+            param: { postcode: ssml_postcode },
+            session: { requestId: requestEnvelope.request.requestId }
+          });
+
           winston.error(error);
 
           return response
@@ -201,6 +210,14 @@ export async function handler(event: RequestEnvelope, context: any, callback: an
             .getResponse();
         }
       } catch (error) {
+        Airbrake.notify({
+          error: error,
+          context: { component: 'deviceAddressServiceClient' },
+          environment: { nodeEnv: process.env.NODE_ENV },
+          param: {  },
+          session: { requestId: requestEnvelope.request.requestId }
+        });
+
         winston.error(error);
 
         if (error.name === 'ServiceError')
@@ -226,6 +243,14 @@ export async function handler(event: RequestEnvelope, context: any, callback: an
     },
     handle(handlerInput) {
       const request = handlerInput.requestEnvelope.request;
+
+      Airbrake.notify({
+        error: 'UhandledIntent fired',
+        context: {  },
+        environment: { nodeEnv: process.env.NODE_ENV },
+        param: {  },
+        session: { requestId: request.requestId }
+      });
 
       return handlerInput.responseBuilder
         .speak(i18n.S(request, '.unhandled_intent.text'))
