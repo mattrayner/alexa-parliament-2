@@ -4,7 +4,7 @@
   "description": "NodeJS SDKv2 Audio Sample Skill",
   "main": "index.ts",
   "scripts": {
-    "test": "AWS_REGION=eu-west-1 NODE_ENV=test ./node_modules/mocha/bin/mocha -r ts-node/register test/**/test*.ts"
+    "test": "AWS_REGION=eu-west-1 NODE_ENV=test ./node_modules/mocha/bin/mocha -r ts-node/register test/**/*.spec.ts"
   },
   "keywords": [
     "alexa",

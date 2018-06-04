@@ -1,10 +1,10 @@
 import * as Winston from 'winston'
 
-let level = 'debug';
+let level:string = 'debug';
 if(process.env.NODE_ENV == 'test')
   level = 'error';
 
-let transports = [
+let transports:Array<Winston.TransportInstance> = [
   new Winston.transports.Console({ timestamp: true })
 ];
 

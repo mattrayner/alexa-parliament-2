@@ -6,22 +6,14 @@ import { RequestEnvelope, ResponseEnvelope, Response } from 'ask-sdk-model';
 import { Configuration } from './configuration';
 import { i18n } from './utils/I18N';
 import { winston } from './utils/logger';
-import * as N3 from 'n3';
 import { NtripleClient } from './clients/ntriple-client';
 import { Airbrake } from './utils/airbrake';
-import * as moment from "moment";
+import { PostcodeProcessor, MPInformation } from './utils/postcodeProcessor';
 
-const PERMISSIONS:string[] = ['read::alexa:device:all:address:country_and_postal_code'];
-const NTRIPLE_ENDPOINT:string = 'beta.parliament.uk';
+const PERMISSIONS: string[] = [ 'read::alexa:device:all:address:country_and_postal_code' ];
+const NTRIPLE_ENDPOINT: string = 'beta.parliament.uk';
 
-interface MPInformation {
-  member: string,
-  constituency: string,
-  party: string,
-  incumbency: string
-}
-
-export async function handler(event: RequestEnvelope, context: any, callback: any, configuration:Configuration=new Configuration()): Promise<ResponseEnvelope> {
+export async function handler(event: RequestEnvelope, context: any, callback: any, configuration: Configuration = new Configuration()): Promise<ResponseEnvelope> {
   const LaunchRequestHandler: RequestHandler = {
     canHandle(handlerInput: HandlerInput) {
       return handlerInput.requestEnvelope.request.type === 'LaunchRequest';
@@ -40,19 +32,19 @@ export async function handler(event: RequestEnvelope, context: any, callback: an
             handlerInput.attributesManager.setPersistentAttributes(attributes);
           }
 
-          let lastLaunchedEPOCH:number = attributes.lastLaunched;
+          let lastLaunchedEPOCH: number = attributes.lastLaunched;
 
-          let message_tag:string = '.launch_request.welcome';
+          let message_tag: string = '.launch_request.welcome';
 
           let long_form_launch_threshold = (new Date().getTime()) - configuration.longformLaunchThreshold;
 
-          if(lastLaunchedEPOCH < long_form_launch_threshold)
+          if (lastLaunchedEPOCH < long_form_launch_threshold)
             message_tag = '.launch_request.return';
 
-          let response:Response = ResponseFactory.init()
-              .speak(i18n.S(request, message_tag, 'Parliament'))
-              .reprompt(i18n.S(request, '.launch_request.reprompt'))
-              .getResponse();
+          let response: Response = ResponseFactory.init()
+            .speak(i18n.S(request, message_tag, 'Parliament'))
+            .reprompt(i18n.S(request, '.launch_request.reprompt'))
+            .getResponse();
 
           return response;
         });
@@ -67,7 +59,7 @@ export async function handler(event: RequestEnvelope, context: any, callback: an
     handle(handlerInput: HandlerInput) {
       const request = handlerInput.requestEnvelope.request;
 
-      let response:Response = ResponseFactory.init()
+      let response: Response = ResponseFactory.init()
         .speak(i18n.S(request, '.help_intent.text'))
         .reprompt(i18n.S(request, '.help_intent.reprompt'))
         .getResponse();
@@ -118,67 +110,39 @@ export async function handler(event: RequestEnvelope, context: any, callback: an
         try {
           let ntripleResponse = await ntripleClient.getTripleStore(`/postcodes/${uri_postcode}`);
 
-          switch(ntripleResponse.statusCode) {
+          switch (ntripleResponse.statusCode) {
             case 200:
-              let object:MPInformation = {
-                member: null,
-                constituency: null,
-                party: null,
-                incumbency: null
-              };
-
               winston.info("Parliament response received");
 
               // Quick exit if we have no data for the given postcode.
-              if(ntripleResponse.store.size === 0) {
+              if (ntripleResponse.store.size === 0) {
                 winston.debug('No triples in store for postcode');
                 return response.speak(i18n.S(requestEnvelope.request, '.find_my_mp_intent.no_mp_for_location', ssml_postcode)).getResponse();
               }
 
-              let store:N3.Store = ntripleResponse.store;
-
-              let memberTriple = store.getQuads(null, 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 'https://id.parliament.uk/schema/Person')[0];
-              if(memberTriple) {
-                let memberNameTriple = store.getQuads(memberTriple.subject, "http://example.com/F31CBD81AD8343898B49DC65743F0BDF", null)[0];
-                if(memberNameTriple) { object.member = memberNameTriple.object.value; }
-              }
-
-              let partyTriple = store.getQuads(null, 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 'https://id.parliament.uk/schema/Party')[0];
-              if(partyTriple) {
-                let partyNameTriple = store.getQuads(partyTriple.subject, "https://id.parliament.uk/schema/partyName", null)[0];
-                if(partyNameTriple) { object.party = partyNameTriple.object.value; }
-              }
-
-              let incumbencyTriple = store.getQuads(null, 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 'https://id.parliament.uk/schema/SeatIncumbency')[0];
-              if(incumbencyTriple) {
-                let incumbencyStartDateTriple = store.getQuads(incumbencyTriple.subject, "https://id.parliament.uk/schema/parliamentaryIncumbencyStartDate", null)[0];
-                if(incumbencyStartDateTriple) { object.incumbency = moment(incumbencyStartDateTriple.object.value, "YYYY-MM-DDZ").format("DD-MM-YYYY"); }
-              }
-
-              let constituencyTriple = store.getQuads(null, 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 'https://id.parliament.uk/schema/ConstituencyGroup')[0];
-              if(constituencyTriple) {
-                let constituencyNameTriple = store.getQuads(constituencyTriple.subject, "https://id.parliament.uk/schema/constituencyGroupName", null)[0];
-                if(constituencyNameTriple) { object.constituency = constituencyNameTriple.object.value; }
-              }
+              let object: MPInformation = PostcodeProcessor(ntripleResponse.store);
 
               winston.info('Triples processed into MPInformation');
 
+              // Default our location to the postcode i.e. 'SW1A 0AA'
               let location = ssml_postcode;
-              if(object.constituency) { location = object.constituency }
+              if (object.constituency) { // If a constituency is available, use that instead i.e. 'Cities of London and Westminster'
+                location = object.constituency
+              }
 
-              if(!object.member) {
+              if (!object.member) {
                 return response.speak(i18n.S(requestEnvelope.request, '.find_my_mp_intent.no_mp_for_location', location)).getResponse();
               }
 
-              if(!object.party) {
-                if(object.incumbency) {
+              if (!object.party) {
+                if (object.incumbency) {
                   return response.speak(i18n.S(requestEnvelope.request, '.find_my_mp_intent.mp_for_location_and_incumbency', location, object.member, object.incumbency)).getResponse();
                 } else {
                   return response.speak(i18n.S(requestEnvelope.request, '.find_my_mp_intent.mp_for_location', location, object.member)).getResponse();
                 }
               }
 
-              if(object.party && object.incumbency) {
+              if (object.party && object.incumbency) {
                 return response.speak(i18n.S(requestEnvelope.request, '.find_my_mp_intent.mp_for_location_party_and_incumbency', location, object.member, object.incumbency, object.party)).getResponse();
               }
 
@@ -194,7 +158,7 @@ export async function handler(event: RequestEnvelope, context: any, callback: an
                 .speak(i18n.S(requestEnvelope.request, '.find_my_mp_intent.no_information', ssml_postcode))
                 .getResponse();
           }
-        } catch(error) {
+        } catch (error) {
           Airbrake.notify({
             error: error,
             context: { component: 'NtripleClient' },
@@ -214,7 +178,7 @@ export async function handler(event: RequestEnvelope, context: any, callback: an
           error: error,
           context: { component: 'deviceAddressServiceClient' },
           environment: { nodeEnv: process.env.NODE_ENV },
-          param: {  },
+          param: {},
           session: { requestId: requestEnvelope.request.requestId }
         });
 
@@ -246,9 +210,9 @@ export async function handler(event: RequestEnvelope, context: any, callback: an
 
       Airbrake.notify({
         error: 'UhandledIntent fired',
-        context: {  },
+        context: {},
         environment: { nodeEnv: process.env.NODE_ENV },
-        param: {  },
+        param: {},
         session: { requestId: request.requestId }
       });
 
