@@ -1,7 +1,7 @@
 'use strict';
 
-import {ResponseEnvelope, Response, ui} from 'ask-sdk-model'
-import {expect} from 'chai';
+import { Response, ResponseEnvelope, ui } from 'ask-sdk-model'
+import { expect } from 'chai';
 
 export class Assertion {
   correctResponseStructure(response: ResponseEnvelope): void {
@@ -53,7 +53,7 @@ export class Assertion {
     expect(r).to.have.property('card');
     expect(r.card.type).to.equal('AskForPermissionsConsent', 'Has a permission card');
     expect((<ui.AskForPermissionsConsentCard>r.card).permissions.length).to.equal(1, 'Has exactly one permission');
-    expect((<ui.AskForPermissionsConsentCard>r.card).permissions[0]).to.equal(
+    expect((<ui.AskForPermissionsConsentCard>r.card).permissions[ 0 ]).to.equal(
       'read::alexa:device:all:address:country_and_postal_code',
       'Has the expected card permission'
     );

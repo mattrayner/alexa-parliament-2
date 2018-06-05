@@ -14,9 +14,9 @@ import { shared } from '../utils/Shared'
 
 import * as r from '../fixtures/requests/session_ended_intent.json'; // tslint:disable-line
 
-const request:RequestEnvelope = <RequestEnvelope>r;
+const request: RequestEnvelope = <RequestEnvelope>r;
 const assert = new Assertion();
-let skill_response:ResponseEnvelope;
+let skill_response: ResponseEnvelope;
 
 describe('Parliament : SessionEndedIntent', function () {
   beforeEach(() => {

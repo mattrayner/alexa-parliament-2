@@ -10,17 +10,13 @@ import { Assertion } from '../utils/Assertion';
 
 import { shared } from '../utils/Shared'
 
-import * as sinon from 'sinon';
-
-import { Configuration } from '../../src/configuration';
-
 import { ddb } from "../utils/DDBController";
 
 import * as r from '../fixtures/requests/help_intent.json'; // tslint:disable-line
 
-const request:RequestEnvelope = <RequestEnvelope>r;
+const request: RequestEnvelope = <RequestEnvelope>r;
 const assert = new Assertion();
-let skill_response:ResponseEnvelope;
+let skill_response: ResponseEnvelope;
 
 describe('Parliament : HelpIntent', function () {
   beforeEach(() => {

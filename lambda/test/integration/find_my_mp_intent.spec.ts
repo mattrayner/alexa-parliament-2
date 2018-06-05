@@ -10,21 +10,15 @@ import { Assertion } from '../utils/Assertion';
 
 import { shared } from '../utils/Shared'
 
-import * as sinon from 'sinon';
-
-import { Configuration } from '../../src/configuration';
-
-import { ddb } from "../utils/DDBController";
-
 import * as nock from 'nock';
 
 import * as no_permission from '../fixtures/requests/find_my_mp_intent/no_permission.json'; // tslint:disable-line
 import * as permission from '../fixtures/requests/find_my_mp_intent/permission.json'; // tslint:disable-line
 
-const no_permission_request:RequestEnvelope = <RequestEnvelope>no_permission;
-const permission_request:RequestEnvelope = <RequestEnvelope>permission;
+const no_permission_request: RequestEnvelope = <RequestEnvelope>no_permission;
+const permission_request: RequestEnvelope = <RequestEnvelope>permission;
 const assert = new Assertion();
-let skill_response:ResponseEnvelope;
+let skill_response: ResponseEnvelope;
 
 describe('Parliament : FindMyMPIntent', function () {
   beforeEach(() => {
@@ -74,13 +68,19 @@ describe('Parliament : FindMyMPIntent', function () {
     context('Amazon API success', () => {
       beforeEach(() => {
         nock('https://api.amazonalexa.com/v1/devices/string-identifying-the-device/settings/address/countryAndPostalCode')
-          .get('').reply(200, '{"countryCode" : "GB", "postalCode" : "SW1A 0AA"}', { 'X-Amzn-RequestId': 'xxxx-xxx-xxx', 'content-type': 'application/json' });
+          .get('').reply(200, '{"countryCode" : "GB", "postalCode" : "SW1A 0AA"}', {
+          'X-Amzn-RequestId': 'xxxx-xxx-xxx',
+          'content-type': 'application/json'
+        });
       });
 
       context('with full postcode information', () => {
         beforeEach(() => {
           nock('https://beta.parliament.uk/postcodes/SW1A%200AA')
-            .get('').replyWithFile(200, __dirname + '/../fixtures/apis/parliament/find_my_mp/full_response.nt', { 'Alexa-Parliament': 'true', 'Accept': 'application/ntriple' });
+            .get('').replyWithFile(200, __dirname + '/../fixtures/apis/parliament/find_my_mp/full_response.nt', {
+            'Alexa-Parliament': 'true',
+            'Accept': 'application/ntriple'
+          });
 
           return new Promise((resolve, reject) => {
             skill(permission_request, null, (error, responseEnvelope) => {
@@ -115,7 +115,10 @@ describe('Parliament : FindMyMPIntent', function () {
         context('no constituency', () => {
           beforeEach(() => {
             nock('https://beta.parliament.uk/postcodes/SW1A%200AA')
-              .get('').replyWithFile(200, __dirname + '/../fixtures/apis/parliament/find_my_mp/no_constituency.nt', { 'Alexa-Parliament': 'true', 'Accept': 'application/ntriple' });
+              .get('').replyWithFile(200, __dirname + '/../fixtures/apis/parliament/find_my_mp/no_constituency.nt', {
+              'Alexa-Parliament': 'true',
+              'Accept': 'application/ntriple'
+            });
 
             return new Promise((resolve, reject) => {
               skill(permission_request, null, (error, responseEnvelope) => {
@@ -149,7 +152,10 @@ describe('Parliament : FindMyMPIntent', function () {
         context('no MP', () => {
           beforeEach(() => {
             nock('https://beta.parliament.uk/postcodes/SW1A%200AA')
-              .get('').replyWithFile(200, __dirname + '/../fixtures/apis/parliament/find_my_mp/no_mp.nt', { 'Alexa-Parliament': 'true', 'Accept': 'application/ntriple' });
+              .get('').replyWithFile(200, __dirname + '/../fixtures/apis/parliament/find_my_mp/no_mp.nt', {
+              'Alexa-Parliament': 'true',
+              'Accept': 'application/ntriple'
+            });
 
             return new Promise((resolve, reject) => {
               skill(permission_request, null, (error, responseEnvelope) => {
@@ -183,7 +189,10 @@ describe('Parliament : FindMyMPIntent', function () {
         context('no party', () => {
           beforeEach(() => {
             nock('https://beta.parliament.uk/postcodes/SW1A%200AA')
-              .get('').replyWithFile(200, __dirname + '/../fixtures/apis/parliament/find_my_mp/no_party.nt', { 'Alexa-Parliament': 'true', 'Accept': 'application/ntriple' });
+              .get('').replyWithFile(200, __dirname + '/../fixtures/apis/parliament/find_my_mp/no_party.nt', {
+              'Alexa-Parliament': 'true',
+              'Accept': 'application/ntriple'
+            });
 
             return new Promise((resolve, reject) => {
               skill(permission_request, null, (error, responseEnvelope) => {
@@ -218,7 +227,10 @@ describe('Parliament : FindMyMPIntent', function () {
         context('no incumbency', () => {
           beforeEach(() => {
             nock('https://beta.parliament.uk/postcodes/SW1A%200AA')
-              .get('').replyWithFile(200, __dirname + '/../fixtures/apis/parliament/find_my_mp/no_incumbency.nt', { 'Alexa-Parliament': 'true', 'Accept': 'application/ntriple' });
+              .get('').replyWithFile(200, __dirname + '/../fixtures/apis/parliament/find_my_mp/no_incumbency.nt', {
+              'Alexa-Parliament': 'true',
+              'Accept': 'application/ntriple'
+            });
 
             return new Promise((resolve, reject) => {
               skill(permission_request, null, (error, responseEnvelope) => {
@@ -252,7 +264,10 @@ describe('Parliament : FindMyMPIntent', function () {
         context('no party or incumbency', () => {
           beforeEach(() => {
             nock('https://beta.parliament.uk/postcodes/SW1A%200AA')
-              .get('').replyWithFile(200, __dirname + '/../fixtures/apis/parliament/find_my_mp/no_party_or_incumbency.nt', { 'Alexa-Parliament': 'true', 'Accept': 'application/ntriple' });
+              .get('').replyWithFile(200, __dirname + '/../fixtures/apis/parliament/find_my_mp/no_party_or_incumbency.nt', {
+              'Alexa-Parliament': 'true',
+              'Accept': 'application/ntriple'
+            });
 
             return new Promise((resolve, reject) => {
               skill(permission_request, null, (error, responseEnvelope) => {

@@ -1,11 +1,11 @@
 'use strict';
 
 import * as AWS from 'aws-sdk';
-import {Configuration} from '../../src/configuration';
-import {AWSError} from 'aws-sdk';
+import { AWSError } from 'aws-sdk';
+import { Configuration } from '../../src/configuration';
 
 // Configure AWS to use eu-west-1 region during testing
-AWS.config.update({region: 'eu-west-1'});
+AWS.config.update({ region: 'eu-west-1' });
 
 class DDBController {
 
@@ -15,7 +15,7 @@ class DDBController {
 
   private documentClient = null;
 
-  async getFromDDB(userId: string, localDB:boolean=true): Promise<AWS.DynamoDB.Types.DocumentClient.GetItemOutput> {
+  async getFromDDB(userId: string, localDB: boolean = true): Promise<AWS.DynamoDB.Types.DocumentClient.GetItemOutput> {
     this.setupDocumentClient(localDB);
 
     return new Promise<AWS.DynamoDB.Types.DocumentClient.GetItemOutput>((resolve, reject) => {
@@ -39,7 +39,7 @@ class DDBController {
     });
   }
 
-  async initialiseDDB(userId: string, localDB:boolean=true): Promise<AWS.DynamoDB.Types.DocumentClient.UpdateItemOutput> {
+  async initialiseDDB(userId: string, localDB: boolean = true): Promise<AWS.DynamoDB.Types.DocumentClient.UpdateItemOutput> {
     this.setupDocumentClient(localDB);
 
     return new Promise<AWS.DynamoDB.Types.DocumentClient.UpdateItemOutput>((resolve, reject) => {
@@ -71,7 +71,7 @@ class DDBController {
   /*
    * Used for unit testing only, to prepare the database before the test
    */
-  async deleteFromDDB(userId: string, localDB:boolean=true): Promise<AWS.DynamoDB.Types.DocumentClient.DeleteItemOutput> {
+  async deleteFromDDB(userId: string, localDB: boolean = true): Promise<AWS.DynamoDB.Types.DocumentClient.DeleteItemOutput> {
     this.setupDocumentClient(localDB);
 
     return new Promise<AWS.DynamoDB.Types.DocumentClient.DeleteItemOutput>((resolve, reject) => {
@@ -96,7 +96,7 @@ class DDBController {
     });
   }
 
-  setupDocumentClient(useLocalDb:boolean): void {
+  setupDocumentClient(useLocalDb: boolean): void {
     this.documentClient = new AWS.DynamoDB.DocumentClient(useLocalDb ? {
       service: this.ddbService
     } : {});

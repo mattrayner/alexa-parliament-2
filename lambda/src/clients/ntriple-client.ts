@@ -5,7 +5,7 @@ import { https } from 'follow-redirects'
 import { winston } from '../utils/logger'
 
 enum RequestMethod {
-  GET='GET'
+  GET = 'GET'
 }
 
 interface RequestOptions {
@@ -24,13 +24,13 @@ interface ResponseObject {
  * This is a small wrapper client for the Parliament N-triple API.
  */
 export class NtripleClient {
-  endpoint:string;
+  endpoint: string;
 
   /**
    * Retrieve an instance of the Ntriple API client.
    * @param {string} endpoint the endpoint of the Ntriple APIs.
    */
-  constructor(endpoint:string) {
+  constructor(endpoint: string) {
     winston.debug("Creating NtripleClient instance.");
     this.endpoint = endpoint;
   }
@@ -41,8 +41,8 @@ export class NtripleClient {
    * This will return a promise which fulfills to a N3 Store.
    * @return {Promise} promise for the request in flight.
    */
-  getTripleStore(path:string):Promise<ResponseObject> {
-    const options:RequestOptions = this.__getRequestOptions(path);
+  getTripleStore(path: string): Promise<ResponseObject> {
+    const options: RequestOptions = this.__getRequestOptions(path);
 
     return new Promise((fulfill, reject) => {
       this.__handleNtripleAPIRequest(options, fulfill, reject);
@@ -57,12 +57,12 @@ export class NtripleClient {
    * @param reject
    * @private
    */
-  __handleNtripleAPIRequest(requestOptions:RequestOptions, fulfill:(responseObject:ResponseObject) => any, reject:() => any) {
+  __handleNtripleAPIRequest(requestOptions: RequestOptions, fulfill: (responseObject: ResponseObject) => any, reject: () => any) {
     winston.debug('getting:');
     winston.debug(`hostname: ${requestOptions.hostname}, path: ${requestOptions.path}`);
 
     https.get(requestOptions, (response) => {
-      let data:string = '';
+      let data: string = '';
 
       winston.debug(`NTriple API responded with a status code of : ${response.statusCode}`);
 
@@ -79,16 +79,16 @@ export class NtripleClient {
       response.on('end', () => {
         winston.debug(`Finished receiving data from: ${response.responseUrl}`);
 
-        let parser:N3.Parser = N3.Parser();
-        let store:N3.Store = new N3.Store();
+        let parser: N3.Parser = N3.Parser();
+        let store: N3.Store = new N3.Store();
 
-        let responseObject:ResponseObject = {
+        let responseObject: ResponseObject = {
           statusCode: response.statusCode,
           store: store
         };
 
-        parser.parse(data, (error, quad) =>{
-          if(quad) {
+        parser.parse(data, (error, quad) => {
+          if (quad) {
             store.addQuad(quad);
           } else {
             winston.debug('Parsing completed; Triple store contains %d triples.', store.size);
@@ -111,7 +111,7 @@ export class NtripleClient {
    * @return {{hostname: string, path: *, method: string, headers: {Authorization: string}}}
    * @private
    */
-  __getRequestOptions(path:string):RequestOptions {
+  __getRequestOptions(path: string): RequestOptions {
     return {
       hostname: this.endpoint,
       path: path,

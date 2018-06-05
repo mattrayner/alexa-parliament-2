@@ -1,14 +1,14 @@
 'use strict';
 
 import * as AWS from 'aws-sdk';
-import { ResponseFactory, SkillBuilders, RequestHandler, HandlerInput } from 'ask-sdk';
-import { RequestEnvelope, ResponseEnvelope, Response } from 'ask-sdk-model';
+import { HandlerInput, RequestHandler, ResponseFactory, SkillBuilders } from 'ask-sdk';
+import { RequestEnvelope, Response, ResponseEnvelope } from 'ask-sdk-model';
 import { Configuration } from './configuration';
 import { i18n } from './utils/I18N';
 import { winston } from './utils/logger';
 import { NtripleClient } from './clients/ntriple-client';
 import { Airbrake } from './utils/airbrake';
-import { PostcodeProcessor, MPInformation } from './utils/postcodeProcessor';
+import { MPInformation, PostcodeProcessor } from './utils/postcodeProcessor';
 
 const PERMISSIONS: string[] = [ 'read::alexa:device:all:address:country_and_postal_code' ];
 const NTRIPLE_ENDPOINT: string = 'beta.parliament.uk';
