@@ -286,7 +286,7 @@ export async function handler(event: RequestEnvelope, context: any, callback: an
       SessionEndedRequestHandler,
       UnhandledIntent
     )
-    .withAutoCreateTable(true)
+    .withAutoCreateTable(false)
     .withTableName(configuration.dbTableName);
 
   if (configuration.useLocalDB) {
