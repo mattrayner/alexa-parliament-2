@@ -20,14 +20,6 @@ let skill_response: ResponseEnvelope;
 describe('Parliament : SittingIntent', function () {
   beforeEach(() => {
     this.timeout(5000);
-
-    // return new Promise((resolve, reject) => {
-    //   // prepare the database
-    //   skill(request, null, (error, responseEnvelope) => {
-    //     skill_response = responseEnvelope;
-    //     resolve();
-    //   });
-    // });
   });
 
   afterEach(() => {
@@ -96,7 +88,7 @@ describe('Parliament : SittingIntent', function () {
     });
 
     it('it responds with the expected output speech', () => {
-      assert.correctOutputSpeechIncludesText(skill_response, "Both houses are sitting.");
+      assert.correctOutputSpeechIncludesText(skill_response, "Only the House of Commons is sitting today.");
     });
 
     it('it responds without reprompt speech', () => {
