@@ -28,9 +28,11 @@ jobs:
     - stage: deploy
       if: branch = master
       node_js: 8
-      before_install: (cd lambda && npm install)
+      before_install:
+        - (cd lambda && npm install)
+        - mkdir -p lambda/dist
+        - make copy
       script: make compile
-      before_deploy: make copy
       deploy:
         provider: lambda
         function_name: parliament
