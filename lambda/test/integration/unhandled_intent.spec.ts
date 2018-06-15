@@ -57,7 +57,7 @@ describe('Parliament : UnhandledIntent', function () {
     assert.correctRepromptSpeechIncludesText(skill_response, 'Unhandled reprompt');
   });
 
-  it('it does not close the session ', () => {
-    assert.correctSessionStatus(skill_response, false);
+  it('it closes the session ', () => {
+    assert.correctSessionStatus(skill_response, true);
   });
 });
