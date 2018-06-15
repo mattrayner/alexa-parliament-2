@@ -1,18 +1,18 @@
-import * as AirbrakeClient from 'airbrake-js'
+const AirbrakeClient = require('airbrake-js');
 
 export interface FakeAirbrake {
   fake: boolean
-  notify: () => void
+  notify(err: any)
 }
 
 export class FakeClient implements FakeAirbrake {
   fake = true;
 
-  notify() {
+  notify(err: any) {
   }
 }
 
-let airbrake: AirbrakeClient | FakeAirbrake;
+let airbrake;
 
 if (process.env.NODE_ENV != 'test' && process.env.AIRBRAKE_PROJECT_ID && process.env.AIRBRAKE_PROJECT_KEY) {
   airbrake = new AirbrakeClient({
