@@ -273,6 +273,7 @@ export async function handler(event: RequestEnvelope, context: any, callback: an
       return handlerInput.responseBuilder
         .speak(i18n.S(request, '.unhandled_intent.text'))
         .reprompt(i18n.S(request, '.unhandled_intent.reprompt'))
+        .withShouldEndSession(true)
         .getResponse();
     },
   };
