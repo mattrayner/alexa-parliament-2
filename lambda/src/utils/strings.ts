@@ -11,7 +11,6 @@ const englishStrings = {
   ".find_my_mp_intent.request_permission": "Please enable Location permissions in the Amazon Alexa app.",
   ".find_my_mp_intent.location_failure": "There was a problem getting your postcode from Amazon. Please try again later.",
   ".find_my_mp_intent.no_address": "I was unable to get the address for this device. Check that you've set and address for this device within your Alexa app.",
-  ".find_my_mp_intent.parliament_error": "I was unable to reach Parliament. Please try again later.",
   ".find_my_mp_intent.mp_error": "Hmm, there was a problem. Please try again later.",
   ".find_my_mp_intent.no_information": "I was unable to find any information for {0}.",
   ".find_my_mp_intent.no_mp_for_location": "I couldn't find an MP for {0}.",
@@ -20,8 +19,15 @@ const englishStrings = {
   ".find_my_mp_intent.mp_for_location_and_party": "The MP for {0}, is {1}. Your MP is a member of the {3} party.",
   ".find_my_mp_intent.mp_for_location_party_and_incumbency": "The MP for {0}, is {1}. Your MP is a member of the {3} party, and was elected on <say-as interpret-as=\"date\" format=\"dmy\">{2}</say-as>.",
 
+  ".sitting_intent.both": "Both houses are sitting today.",
+  ".sitting_intent.commons_only": "Only the House of Commons is sitting today.",
+  ".sitting_intent.lords_only": "Only the House of Lords is sitting today.",
+  ".sitting_intent.neither": "Neither house is sitting today.",
+
   ".unhandled_intent.text": "Unhandled stuff",
   ".unhandled_intent.reprompt": "Unhandled reprompt",
+
+  ".parliament_error": "I was unable to reach Parliament. Please try again later.",
 
   "TEST": "test english",
   "TEST_PARAMS": "test with parameters {0} and {1}",
@@ -38,7 +44,6 @@ const frenchStrings = {
   ".find_my_mp_intent.request_permission": "~",
   ".find_my_mp_intent.location_failure": "~",
   ".find_my_mp_intent.no_address": "~",
-  ".find_my_mp_intent.parliament_error": "~",
   ".find_my_mp_intent.mp_error": "~",
   ".find_my_mp_intent.no_information": "~",
   ".find_my_mp_intent.no_mp_for_location": "~",
@@ -47,8 +52,15 @@ const frenchStrings = {
   ".find_my_mp_intent.mp_for_location_and_party": "~",
   ".find_my_mp_intent.mp_for_location_party_and_incumbency": "~",
 
+  ".sitting_intent.both": "~",
+  ".sitting_intent.commons_only": "~",
+  ".sitting_intent.lords_only": "~",
+  ".sitting_intent.neither": "~",
+
   ".unhandled_intent.text": "~",
   ".unhandled_intent.reprompt": "~",
+
+  ".parliament_error": "~",
 
   "TEST": "test français",
   "TEST_PARAMS": "test avec paramètres {0} et {1}",

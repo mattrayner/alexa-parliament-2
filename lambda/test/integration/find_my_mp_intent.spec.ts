@@ -12,8 +12,8 @@ import { shared } from '../utils/Shared'
 
 import * as nock from 'nock';
 
-import * as no_permission from '../fixtures/requests/find_my_mp_intent/no_permission.json'; // tslint:disable-line
-import * as permission from '../fixtures/requests/find_my_mp_intent/permission.json'; // tslint:disable-line
+const no_permission = require('../fixtures/requests/find_my_mp_intent/no_permission.json'); // tslint:disable-line
+const permission = require('../fixtures/requests/find_my_mp_intent/permission.json'); // tslint:disable-line
 
 const no_permission_request: RequestEnvelope = <RequestEnvelope>no_permission;
 const permission_request: RequestEnvelope = <RequestEnvelope>permission;

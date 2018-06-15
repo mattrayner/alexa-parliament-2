@@ -9,9 +9,14 @@ import { winston } from './utils/logger';
 import { NtripleClient } from './clients/ntriple-client';
 import { Airbrake } from './utils/airbrake';
 import { MPInformation, PostcodeProcessor } from './utils/postcodeProcessor';
+import { NonSittingObject, SittingData, SittingProcessor } from './utils/sittingProcessor';
+import { JsonClient } from "./clients/json-client";
+import { JsonResponseObject } from "./clients/shared";
+import { ResponseBuilder } from "../dist/node_modules/ask-sdk-core/dist";
 
 const PERMISSIONS: string[] = [ 'read::alexa:device:all:address:country_and_postal_code' ];
 const NTRIPLE_ENDPOINT: string = 'beta.parliament.uk';
+const CALENDAR_ENDPOINT: string = 'service.calendar.parliament.uk';
 
 export async function handler(event: RequestEnvelope, context: any, callback: any, configuration: Configuration = new Configuration()): Promise<ResponseEnvelope> {
   const LaunchRequestHandler: RequestHandler = {
@@ -170,7 +175,7 @@ export async function handler(event: RequestEnvelope, context: any, callback: an
           winston.error(error);
 
           return response
-            .speak(i18n.S(requestEnvelope.request, '.find_my_mp_intent.parliament_error'))
+            .speak(i18n.S(requestEnvelope.request, '.parliament_error'))
             .getResponse();
         }
       } catch (error) {
@@ -188,6 +193,55 @@ export async function handler(event: RequestEnvelope, context: any, callback: an
           return response.speak(i18n.S(requestEnvelope.request, '.find_my_mp_intent.location_failure')).getResponse();
 
         throw error;
+      }
+    }
+  };
+
+  const SittingRequestHandler: RequestHandler = {
+    canHandle(handlerInput: HandlerInput) {
+      return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+        && handlerInput.requestEnvelope.request.intent.name === 'SittingIntent';
+    },
+    async handle(handlerInput: HandlerInput) {
+      const request = handlerInput.requestEnvelope.request;
+      let response: ResponseBuilder = ResponseFactory.init().withShouldEndSession(true)
+
+      const jsonClient: JsonClient = new JsonClient(CALENDAR_ENDPOINT, false);
+      const apiPath: string = '/calendar/events/nonsitting.json?date=today';
+
+      try {
+        let jsonResponse:JsonResponseObject = await jsonClient.getJSON(apiPath);
+
+        switch (jsonResponse.statusCode) {
+          case 200:
+            let sittingObject: SittingData = SittingProcessor(jsonResponse.json);
+
+            let message_tag = `.sitting_intent.${sittingObject.translation_key}`;
+
+            return response.speak(i18n.S(request, message_tag))
+              .getResponse();
+          default:
+            winston.error(`Other error - got status code ${jsonResponse.statusCode}`);
+            return response
+              .speak(i18n.S(request, '.parliament_error'))
+              .getResponse();
+        }
+      } catch (error) {
+        Airbrake.notify({
+          error: error,
+          context: { component: 'JsonClient' },
+          environment: { nodeEnv: process.env.NODE_ENV },
+          param: { path: apiPath },
+          session: { requestId: request.requestId }
+        });
+
+        winston.error(error);
+
+        let response: Response = ResponseFactory.init()
+          .speak(i18n.S(request, '.parliament_error'))
+          .getResponse();
+
+        return response;
       }
     }
   };
@@ -228,6 +282,7 @@ export async function handler(event: RequestEnvelope, context: any, callback: an
       LaunchRequestHandler,
       HelpRequestHandler,
       FindMyMPIntent,
+      SittingRequestHandler,
       SessionEndedRequestHandler,
       UnhandledIntent
     )

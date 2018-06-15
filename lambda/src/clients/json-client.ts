@@ -1,32 +1,35 @@
 'use strict';
 
-import * as N3 from 'n3'
-import { https } from 'follow-redirects'
+import { http, https } from 'follow-redirects'
 import { winston } from '../utils/logger'
-import { NtripleResponseObject, RequestMethod, RequestOptions } from "./shared";
+import { JsonResponseObject, RequestMethod, RequestOptions } from './shared';
 
 /**
  * This is a small wrapper client for the Parliament N-triple API.
  */
-export class NtripleClient {
+export class JsonClient {
   endpoint: string;
+  https: boolean;
 
   /**
-   * Retrieve an instance of the Ntriple API client.
+   * Retrieve an instance of the JSON API client.
    * @param {string} endpoint the endpoint of the Ntriple APIs.
+   * @param {boolean} https Should requests be made via HTTPS?
    */
-  constructor(endpoint: string) {
-    winston.debug("Creating NtripleClient instance.");
+  constructor(endpoint: string, https: boolean = true) {
+    winston.debug("Creating JsonClient instance.");
     this.endpoint = endpoint;
+    this.https = https;
   }
 
   /**
-   * This will make a request to the Ntriple API using the endpoint
-   * the NTriple Client was initialized with.
-   * This will return a promise which fulfills to a N3 Store.
+   * This will make a request to the JSON API using the endpoint
+   * the JSON Client was initialized with.
+   * This will return a promise which fulfills to a JSON object.
+   * @param {string} path
    * @return {Promise} promise for the request in flight.
    */
-  getTripleStore(path: string): Promise<NtripleResponseObject> {
+  getJSON(path: string): Promise<JsonResponseObject> {
     const options: RequestOptions = this.__getRequestOptions(path);
 
     return new Promise((fulfill, reject) => {
@@ -42,18 +45,19 @@ export class NtripleClient {
    * @param reject
    * @private
    */
-  __handleNtripleAPIRequest(requestOptions: RequestOptions, fulfill: (responseObject: NtripleResponseObject) => any, reject: () => any) {
+  __handleNtripleAPIRequest(requestOptions: RequestOptions, fulfill: (responseObject: JsonResponseObject) => any, reject: () => any) {
     winston.debug('getting:');
     winston.debug(`hostname: ${requestOptions.hostname}, path: ${requestOptions.path}`);
 
-    https.get(requestOptions, (response) => {
+    let connection: (http | https) = this.https ? https : http;
+    connection.get(requestOptions, (response) => {
       let data: string = '';
 
-      winston.debug(`NTriple API responded with a status code of : ${response.statusCode}`);
+      winston.debug(`JSON API responded with a status code of : ${response.statusCode}`);
 
       // Report back a 500 so it can be handled in the app
       if ((`${response.statusCode}`).match(/^5\d\d$/))
-        fulfill({ statusCode: response.statusCode, store: null });
+        fulfill({ statusCode: response.statusCode, json: null });
 
       response.on('data', (chunk) => {
         winston.debug(`Received data from: ${response.responseUrl}`);
@@ -64,25 +68,12 @@ export class NtripleClient {
       response.on('end', () => {
         winston.debug(`Finished receiving data from: ${response.responseUrl}`);
 
-        let parser: N3.Parser = N3.Parser();
-        let store: N3.Store = new N3.Store();
-
-        let responseObject: NtripleResponseObject = {
+        let responseObject: JsonResponseObject = {
           statusCode: response.statusCode,
-          store: store
+          json: JSON.parse(data)
         };
 
-        parser.parse(data, (error, quad) => {
-          if (quad) {
-            store.addQuad(quad);
-          } else {
-            winston.debug('Parsing completed; Triple store contains %d triples.', store.size);
-
-            responseObject.store = store;
-
-            fulfill(responseObject);
-          }
-        });
+        fulfill(responseObject);
       })
     }).on('error', (e) => {
       winston.error(e);
@@ -93,7 +84,7 @@ export class NtripleClient {
   /**
    * Private helper method for retrieving request options.
    * @param {string} path the path that you want to hit against the API provided by the skill event.
-   * @return {{hostname: string, path: *, method: string, headers: {Authorization: string}}}
+   * @return {RequestOptions}
    * @private
    */
   __getRequestOptions(path: string): RequestOptions {
@@ -103,7 +94,7 @@ export class NtripleClient {
       method: RequestMethod.GET,
       headers: {
         'Alexa-Parliament': 'true',
-        accept: 'application/n-triples'
+        accept: 'application/json'
       }
     };
   }

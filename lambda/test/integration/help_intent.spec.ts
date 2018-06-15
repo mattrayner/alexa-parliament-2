@@ -12,7 +12,7 @@ import { shared } from '../utils/Shared'
 
 import { ddb } from "../utils/DDBController";
 
-import * as r from '../fixtures/requests/help_intent.json'; // tslint:disable-line
+const r = require('../fixtures/requests/help_intent.json'); // tslint:disable-line
 
 const request: RequestEnvelope = <RequestEnvelope>r;
 const assert = new Assertion();

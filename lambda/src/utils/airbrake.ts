@@ -1,4 +1,5 @@
 import * as AirbrakeClient from 'airbrake-js'
+
 export interface FakeAirbrake {
   fake: boolean
   notify: () => void
@@ -7,7 +8,7 @@ export interface FakeAirbrake {
 export class FakeClient implements FakeAirbrake {
   fake = true;
 
-  notify () {
+  notify() {
   }
 }
 

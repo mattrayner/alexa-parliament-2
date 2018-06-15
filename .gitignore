@@ -1,6 +1,8 @@
 # Don't include node modules
 lambda/node_modules
 lambda/dist
+lambda/src/**/*.js
+lambda/test/**/*.js
 
 ### WebStorm ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
@@ -19,3 +21,7 @@ lambda/dist
 .idea/**/sqlDataSources.xml
 .idea/**/dynamic.xml
 .idea/**/uiDesigner.xml
+
+# Coverage
+.nyc_output/
+coverage/
