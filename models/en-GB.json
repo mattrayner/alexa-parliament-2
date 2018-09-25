@@ -44,6 +44,47 @@
           ]
         },
         {
+          "name": "SittingIntent",
+          "slots": [
+            {
+              "name": "house",
+              "type": "HOUSE"
+            }
+          ],
+          "samples": [
+            "are all the restaurants open",
+            "for sitting info",
+            "for sitting info on the {house}",
+            "for sitting info on the house of {house}",
+            "for sitting info on the houses of {house}",
+            "for sitting info for the {house}",
+            "for sitting info for the house of {house}",
+            "for sitting info for the houses of {house}",
+            "for sitting information",
+            "for sitting information on the {house}",
+            "for sitting information for the {house}",
+            "find me sitting info",
+            "find me sitting info on the {house}",
+            "find me sitting info on the house of {house}",
+            "find me sitting info on the houses of {house}",
+            "find me sitting info for the {house}",
+            "find me sitting info for the house of {house}",
+            "find me sitting info for the houses of {house}",
+            "find me sitting information",
+            "find me sitting information on the {house}",
+            "find me sitting information for the {house}",
+            "are you sitting",
+            "are the {house} sitting",
+            "is the {house} sitting",
+            "if it is sitting",
+            "if it's sitting",
+            "if the {house} is sitting",
+            "if the {house} are sitting",
+            "if the house of {house} is sitting",
+            "if the houses of {house} are sitting"
+          ]
+        },
+        {
           "name": "FindMyMPIntent",
           "slots": [],
           "samples": [

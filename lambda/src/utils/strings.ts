@@ -23,6 +23,7 @@ const englishStrings = {
   ".sitting_intent.commons_only": "Only the House of Commons is sitting today.",
   ".sitting_intent.lords_only": "Only the House of Lords is sitting today.",
   ".sitting_intent.neither": "Neither house is sitting today.",
+  ".sitting_intent.neither_with_data": "Both the House of Commons and House of Lords are on {0} recess.",
 
   ".unhandled_intent.text": "Unhandled stuff",
   ".unhandled_intent.reprompt": "Unhandled reprompt",
@@ -56,6 +57,7 @@ const frenchStrings = {
   ".sitting_intent.commons_only": "~",
   ".sitting_intent.lords_only": "~",
   ".sitting_intent.neither": "~",
+  ".sitting_intent.neither_with_data": "~",
 
   ".unhandled_intent.text": "~",
   ".unhandled_intent.reprompt": "~",

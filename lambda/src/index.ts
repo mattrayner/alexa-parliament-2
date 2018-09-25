@@ -9,10 +9,10 @@ import { winston } from './utils/logger';
 import { NtripleClient } from './clients/ntriple-client';
 import { Airbrake } from './utils/airbrake';
 import { MPInformation, PostcodeProcessor } from './utils/postcodeProcessor';
-import { NonSittingObject, SittingData, SittingProcessor } from './utils/sittingProcessor';
+import { SittingData, SittingProcessor } from './utils/sittingProcessor';
 import { JsonClient } from "./clients/json-client";
 import { JsonResponseObject } from "./clients/shared";
-import { ResponseBuilder } from "../dist/node_modules/ask-sdk-core/dist";
+import { ResponseBuilder } from "ask-sdk-core";
 
 const PERMISSIONS: string[] = [ 'read::alexa:device:all:address:country_and_postal_code' ];
 const NTRIPLE_ENDPOINT: string = 'beta.parliament.uk';
@@ -218,7 +218,7 @@ export async function handler(event: RequestEnvelope, context: any, callback: an
 
             let message_tag = `.sitting_intent.${sittingObject.translation_key}`;
 
-            return response.speak(i18n.S(request, message_tag))
+            return response.speak(i18n.S(request, message_tag, sittingObject.translation_data))
               .getResponse();
           default:
             winston.error(`Other error - got status code ${jsonResponse.statusCode}`);

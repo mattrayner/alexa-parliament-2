@@ -175,20 +175,41 @@ describe('Parliament : SittingIntent', function () {
   });
 
   describe('handles multiple reasons for not sitting', () => {
-    context('summer recess', () => {
-      it('responds with the expected output');
-    });
+    context('If descriptions are not empty, and match i.e. Conference', () => {
+      beforeEach(() => {
+        nock('http://service.calendar.parliament.uk')
+          .get('/calendar/events/nonsitting.json?date=today').replyWithFile(200, __dirname + '/../fixtures/apis/parliament/calendar/nonsitting/conference.json', {
+          'alexa-parliament': 'true',
+          'accept': 'application/json'
+        });
 
-    context('christmas recess', () => {
-      it('responds with the expected output');
-    });
+        return new Promise((resolve, reject) => {
+          skill(request, null, (error, responseEnvelope) => {
+            skill_response = responseEnvelope;
+            resolve();
+          })//, shared.test_configuration());
+        });
+      });
 
-    context('easter recess', () => {
-      it('responds with the expected output');
-    });
+      it('it responds with valid response structure ', () => {
+          assert.correctResponseStructure(skill_response);
+      });
 
-    context('generic recess', () => {
-      it('responds with the expected output');
+      it('it responses with output speech ', () => {
+          assert.correctOutputSpeechStructure(skill_response);
+      });
+
+      it('it responds with the expected output speech', () => {
+          assert.correctOutputSpeechIncludesText(skill_response, "Both the House of Commons and House of Lords are on Conference recess.");
+      });
+
+      it('it responds without reprompt speech', () => {
+          assert.withoutRepromptSpeechStructure(skill_response);
+      });
+
+      it('it closes the session ', () => {
+          assert.correctSessionStatus(skill_response, true);
+      });
     });
   });
 });
