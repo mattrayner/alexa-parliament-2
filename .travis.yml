@@ -31,8 +31,8 @@ jobs:
       before_install:
         - (cd lambda && npm install)
         - mkdir -p lambda/dist
-        - make copy
       script: make compile
+      before_deploy: make dependencies
       deploy:
         provider: lambda
         function_name: parliament
