@@ -25,6 +25,8 @@ const englishStrings = {
   ".sitting_intent.neither": "Neither house is sitting today.",
   ".sitting_intent.neither_with_data": "Both the House of Commons and House of Lords are on {0} recess.",
 
+  ".whats_on.event": "at {0} in {1}",
+
   ".unhandled_intent.text": "Unhandled stuff",
   ".unhandled_intent.reprompt": "Unhandled reprompt",
 
@@ -59,7 +61,9 @@ const frenchStrings = {
   ".sitting_intent.neither": "~",
   ".sitting_intent.neither_with_data": "~",
 
-  ".unhandled_intent.text": "~",
+  ".whats_on.event": "~",
+
+    ".unhandled_intent.text": "~",
   ".unhandled_intent.reprompt": "~",
 
   ".parliament_error": "~",
